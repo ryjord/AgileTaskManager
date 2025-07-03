@@ -32,8 +32,6 @@ export default function RootLayout({
     <html lang={locale} dir="ltr" suppressHydrationWarning>
       <body className={`${inter.className} bg-background antialiased`}>
         <DashboardWrapper>
-          {/* Consider using next/image for optimized images */}
-          <img src="/heavy-image.png" alt="Heavy" loading="lazy" />
           {children}
         </DashboardWrapper>
       </body>
