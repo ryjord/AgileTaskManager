@@ -18,7 +18,7 @@ enum TaskStatus {
   TODO
   IN_PROGRESS
   DONE
-  BLOCKED
+  REVIEW
 }
 
 enum TaskPriority {
@@ -85,6 +85,7 @@ model Task {
   tags                String?
   startDate           DateTime?
   dueDate             DateTime?
+  points              String?
   project_ID          Int           @map("project_ID")
   author_user_ID      Int           @map("author_user_ID")
   assigned_user_ID    Int?          @map("assigned_user_ID")

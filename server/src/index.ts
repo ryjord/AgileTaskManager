@@ -7,7 +7,10 @@ import cors from "cors"
 import helmet from "helmet";
 import morgan from "morgan";
 import { Request, Response, NextFunction } from "express";
+
 /* Route import */
+import projectRoutes from "./routes/projectRoutes";
+import taskRoutes from "./routes/taskRoutes";
 
 /* configurations */
 const app = express();
@@ -30,6 +33,10 @@ app.use(cors({
 app.get('/', (req,res) => {
     res.send("this server is running correctly");
 });
+
+// usage cases
+app.use("/projects", projectRoutes);
+app.use("/tasks", taskRoutes);
 
 // Catch-all 404 handler
 app.use((req, res) => {
