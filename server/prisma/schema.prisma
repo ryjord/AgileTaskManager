@@ -1,0 +1,143 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+  BLOCKED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+  BACKLOG
+}
+
+model User {
+  user_ID            Int     @id @default(autoincrement()) @map("user_ID")
+  cognito_ID         String  @unique
+  username           String  @unique
+  profilePictureUrl  String?
+  team_ID            Int?    @map("team_ID")
+
+  authoredTasks      Task[]           @relation("TaskAuthor")
+  assignedTasks      Task[]           @relation("TaskAssignee")
+  taskAssignments    TaskAssignment[]
+  attachments        Attachment[]
+  comments           Comment[]
+  team               Team?            @relation(fields: [team_ID], references: [team_ID])
+
+  @@index([team_ID])
+}
+
+model Team {
+  team_ID                   Int           @id @default(autoincrement()) @map("team_ID")
+  teamName                  String
+  productOwneruser_ID       Int?          @map("productOwneruser_ID")
+  projectManageruser_ID     Int?          @map("projectManageruser_ID")
+
+  projectTeams              ProjectTeam[]
+  user                      User[]
+}
+
+model Project {
+  project_ID          Int           @id @default(autoincrement()) @map("project_ID")
+  name                String
+  description         String?
+  startDate           DateTime?
+  endDate             DateTime?
+
+  tasks               Task[]
+  projectTeams        ProjectTeam[]
+}
+
+model ProjectTeam {
+  projectTeam_ID      Int     @id @default(autoincrement()) @map("projectTeam_ID")
+  team_ID             Int     @map("team_ID")
+  project_ID          Int     @map("project_ID")
+
+  team                Team    @relation(fields: [team_ID], references: [team_ID])
+  project             Project @relation(fields: [project_ID], references: [project_ID])
+}
+
+model Task {
+  task_ID             Int           @id @default(autoincrement()) @map("task_ID")
+  title               String
+  description         String?
+  status              TaskStatus?
+  priority            TaskPriority?
+  tags                String?
+  startDate           DateTime?
+  dueDate             DateTime?
+  project_ID          Int           @map("project_ID")
+  author_user_ID      Int           @map("author_user_ID")
+  assigned_user_ID    Int?          @map("assigned_user_ID")
+  updatedAt           DateTime      @updatedAt
+
+  project             Project       @relation(fields: [project_ID], references: [project_ID])
+  author              User          @relation("TaskAuthor", fields: [author_user_ID], references: [user_ID])
+  assignee            User?         @relation("TaskAssignee", fields: [assigned_user_ID], references: [user_ID])
+  taskAssignments     TaskAssignment[]
+  attachments         Attachment[]
+  comments            Comment[]
+
+  @@index([project_ID])
+  @@index([author_user_ID])
+  @@index([assigned_user_ID])
+}
+
+model TaskAssignment {
+  taskAssignment_ID         Int @id @default(autoincrement())
+  user_ID    Int @map("user_ID")
+  task_ID    Int @map("task_ID")
+
+  user       User @relation(fields: [user_ID], references: [user_ID])
+  task       Task @relation(fields: [task_ID], references: [task_ID])
+
+  @@index([user_ID])
+  @@index([task_ID])
+}
+
+model Attachment {
+  attachment_ID           Int     @id @default(autoincrement())
+  fileURL      String
+  fileName     String?
+  task_ID      Int     @map("task_ID")
+  uploadedById Int     @map("uploadedById")
+
+  task         Task    @relation(fields: [task_ID], references: [task_ID])
+  uploadedBy   User    @relation(fields: [uploadedById], references: [user_ID])
+
+  @@index([task_ID])
+  @@index([uploadedById])
+}
+
+model Comment {
+  comment_ID         Int      @id @default(autoincrement())
+  text       String
+  task_ID    Int      @map("task_ID")
+  user_ID    Int      @map("user_ID")
+  updatedAt  DateTime @updatedAt
+
+  task       Task     @relation(fields: [task_ID], references: [task_ID])
+  user       User     @relation(fields: [user_ID], references: [user_ID])
+
+  @@index([task_ID])
+  @@index([user_ID])
+}

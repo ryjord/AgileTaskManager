@@ -1,0 +1,142 @@
+[
+  {
+
+    "username": "AliceJones",
+    "team_ID": 1,
+    "profilePictureUrl": "p1.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174001"
+  },
+  {
+
+    "username": "BobSmith",
+    "team_ID": 2,
+    "profilePictureUrl": "p2.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174002"
+  },
+  {
+
+    "username": "CarolWhite",
+    "team_ID": 3,
+    "profilePictureUrl": "p3.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174003"
+  },
+  {
+ 
+    "username": "DaveBrown",
+    "team_ID": 4,
+    "profilePictureUrl": "p4.jpeg",
+    "cognito_ID": "213b7530-1031-70e0-67e9-fe0805e18fb3"
+  },
+  {
+
+    "username": "EveClark",
+    "team_ID": 5,
+    "profilePictureUrl": "p5.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174005"
+  },
+  {
+
+    "username": "FrankWright",
+    "team_ID": 1,
+    "profilePictureUrl": "p6.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174006"
+  },
+  {
+
+    "username": "GraceHall",
+    "team_ID": 2,
+    "profilePictureUrl": "p7.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174007"
+  },
+  {
+
+    "username": "HenryAllen",
+    "team_ID": 3,
+    "profilePictureUrl": "p8.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174008"
+  },
+  {
+
+    "username": "IdaMartin",
+    "team_ID": 4,
+    "profilePictureUrl": "p9.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174009"
+  },
+  {
+
+    "username": "JohnDoe",
+    "team_ID": 5,
+    "profilePictureUrl": "p10.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174010"
+  },
+  {
+
+    "username": "LauraAdams",
+    "team_ID": 1,
+    "profilePictureUrl": "p11.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174011"
+  },
+  {
+
+    "username": "NormanBates",
+    "team_ID": 2,
+    "profilePictureUrl": "p12.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174012"
+  },
+  {
+
+    "username": "OliviaPace",
+    "team_ID": 3,
+    "profilePictureUrl": "p13.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174013"
+  },
+  {
+
+    "username": "PeterQuill",
+    "team_ID": 4,
+    "profilePictureUrl": "p1.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174014"
+  },
+  {
+
+    "username": "QuincyAdams",
+    "team_ID": 5,
+    "profilePictureUrl": "p2.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174015"
+  },
+  {
+
+    "username": "RachelGreen",
+    "team_ID": 1,
+    "profilePictureUrl": "p3.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174016"
+  },
+  {
+
+    "username": "SteveJobs",
+    "team_ID": 2,
+    "profilePictureUrl": "p4.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174017"
+  },
+  {
+
+    "username": "TinaFey",
+    "team_ID": 3,
+    "profilePictureUrl": "p5.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174018"
+  },
+  {
+
+    "username": "UrsulaMonroe",
+    "team_ID": 4,
+    "profilePictureUrl": "p6.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174019"
+  },
+  {
+
+    "username": "VictorHugo",
+    "team_ID": 5,
+    "profilePictureUrl": "p7.jpeg",
+    "cognito_ID": "123e4567-e89b-12d3-a456-426614174020"
+  }
+]

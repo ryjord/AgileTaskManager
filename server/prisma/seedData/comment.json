@@ -1,0 +1,177 @@
+[
+  {
+
+    "text": "We need to update this design to include new specifications.",
+    "task_ID": 1,
+    "user_ID": 2,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Can we meet to discuss the navigation algorithm updates?",
+    "task_ID": 2,
+    "user_ID": 4,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "This energy solution looks promising, but needs more research.",
+    "task_ID": 3,
+    "user_ID": 6,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Let's revise the software development workflow to include agile methodologies.",
+    "task_ID": 4,
+    "user_ID": 8,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "We should consider newer AI models for better accuracy.",
+    "task_ID": 5,
+    "user_ID": 10,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Product testing needs to be more rigorous.",
+    "task_ID": 6,
+    "user_ID": 12,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Optimization algorithms are not yet efficient.",
+    "task_ID": 7,
+    "user_ID": 14,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Database overhaul could impact current operations negatively.",
+    "task_ID": 8,
+    "user_ID": 16,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Infrastructure upgrades must be done during low traffic hours.",
+    "task_ID": 9,
+    "user_ID": 18,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Security measures need to be enhanced to prevent data breaches.",
+    "task_ID": 10,
+    "user_ID": 20,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Consider using more robust training datasets for AI.",
+    "task_ID": 11,
+    "user_ID": 1,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Server security update meeting scheduled for next week.",
+    "task_ID": 12,
+    "user_ID": 2,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "UX redesign has been well received in initial user tests.",
+    "task_ID": 13,
+    "user_ID": 3,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Data analytics implementation needs to account for real-time processing delays.",
+    "task_ID": 14,
+    "user_ID": 4,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Encryption project needs to align with international security standards.",
+    "task_ID": 15,
+    "user_ID": 5,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Review cloud storage optimization strategies in Q3 meeting.",
+    "task_ID": 16,
+    "user_ID": 6,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Hardware compatibility tests to include newer device models.",
+    "task_ID": 17,
+    "user_ID": 7,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+ 
+    "text": "Visualization tools to support both 2D and 3D data representations.",
+    "task_ID": 18,
+    "user_ID": 8,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+   
+    "text": "IoT device prototypes to undergo extensive field testing.",
+    "task_ID": 19,
+    "user_ID": 9,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Legacy system upgrade to start with backend databases.",
+    "task_ID": 20,
+    "user_ID": 10,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Network security framework should prioritize threat detection improvements.",
+    "task_ID": 21,
+    "user_ID": 1,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Application deployment strategies to include Docker integration.",
+    "task_ID": 22,
+    "user_ID": 2,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Market analysis should cover competitive product landscapes.",
+    "task_ID": 23,
+    "user_ID": 3,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "Feedback mechanisms to utilize adaptive questioning techniques.",
+    "task_ID": 24,
+    "user_ID": 4,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  },
+  {
+
+    "text": "API integration must ensure data privacy compliance.",
+    "task_ID": 25,
+    "user_ID": 5,
+    "updatedAt": "2023-08-25T00:00:00Z"
+  }
+]
