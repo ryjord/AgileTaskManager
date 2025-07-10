@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PrismaClient, TaskStatus } from "@prisma/client";
+import { PrismaClient, TaskStatus, TaskPriority } from "@prisma/client";
 
 /**
  * Helper function to check if a value is a valid TaskStatus enum value.
@@ -7,6 +7,14 @@ import { PrismaClient, TaskStatus } from "@prisma/client";
  */
 function isTaskStatus(value: any): value is TaskStatus {
     return Object.values(TaskStatus).includes(value as TaskStatus);
+}
+
+/**
+ * Helper function to check if a value is a valid TaskPriority enum value.
+ * This is used to validate user input for the 'priority' field.
+ */
+function isTaskPriority(value: any): value is TaskPriority {
+    return Object.values(TaskPriority).includes(value as TaskPriority);
 }
 
 /**
@@ -51,11 +59,11 @@ const getTasks = (prisma: PrismaClient) => async (
                 where: {
                     project_ID: projectIdNum,
                 },
-                select: {
-                    task_ID: true,
-                    title: true,
-                    status: true,
-                    dueDate: true,
+                include: {
+                    author: true,
+                    assignee: true,
+                    comments: true,
+                    attachments: true,
                     // Add only the fields needed in the response for efficiency and security
                 },
             }),
@@ -119,6 +127,12 @@ const createTasks = (prisma: PrismaClient) => async (
         return;
     }
 
+    // Validate priority: if present, must be a valid TaskPriority enum value
+    if (priority && !isTaskPriority(priority)) {
+        res.status(400).json({ message: "Invalid priority value." });
+        return;
+    }
+
     // Validate tags: if present, must be an array of strings
     if (tags && (!Array.isArray(tags) || !tags.every((tag: any) => typeof tag === "string"))) {
         res.status(400).json({ message: "Invalid tags value." });
@@ -156,6 +170,7 @@ const createTasks = (prisma: PrismaClient) => async (
                 task_ID: true,
                 title: true,
                 status: true,
+                priority: true,
                 dueDate: true,
                 // Add only the fields needed in the response
             }
