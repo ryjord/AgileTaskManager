@@ -3,7 +3,7 @@ dotenv.config();
 
 import express from "express";
 import bodyParser from "body-parser";
-import cors from "cors"
+import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import { Request, Response, NextFunction } from "express";
@@ -22,16 +22,18 @@ app.use(
 );
 app.use(morgan("common"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// CORS: Allow requests from frontend (localhost:3000) during development
 app.use(cors({
-  origin: ['https://your-allowed-origin.com'],
-  methods: ['GET', 'POST'],
+  origin: ['http://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
 
 /* Routes */
-app.get('/', (req,res) => {
-    res.send("this server is running correctly");
+app.get('/', (req, res) => {
+  res.send("this server is running correctly");
 });
 
 // usage cases
@@ -40,21 +42,22 @@ app.use("/tasks", taskRoutes);
 
 // Catch-all 404 handler
 app.use((req, res) => {
-    res.status(404).send('Not Found');
+  res.status(404).send('Not Found');
 });
 
 // Error handling middleware
-
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Internal Server Error' });
+  console.error(err.stack);
+  res.status(500).json({ error: 'Internal Server Error' });
 });
 
+// Use PORT from env or fallback to 8000 for backend (not 3000!)
 const portEnv = process.env.PORT;
-const port = portEnv && !isNaN(Number(portEnv)) ? Number(portEnv) : 3000;
+const port = portEnv && !isNaN(Number(portEnv)) ? Number(portEnv) : 8000;
 if (portEnv && isNaN(Number(portEnv))) {
-    console.error(`Invalid PORT value "${portEnv}". Falling back to 3000.`);
+  console.error(`Invalid PORT value "${portEnv}". Falling back to 8000.`);
 }
 app.listen(port, () => {
-    console.log(`Server Running On Port : ${port} `);
-})
+  console.log(`Server Running On Port : ${port} `);
+  console.log(`CORS allowed origins: http://localhost:3000`);
+});

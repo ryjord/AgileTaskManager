@@ -23,7 +23,7 @@ router.post("/", createTasks(prisma));
 // Route: PATCH /:task_ID/TaskStatus
 // Description: Update the status of a specific task identified by task_ID.
 // Controller: updateTaskStatus handles validation, existence check, update, and response.
-router.patch("/:task_ID/TaskStatus", updateTaskStatus(prisma));
+router.patch("/:task_ID/status", updateTaskStatus(prisma));
 
 // Export the configured router for use in the main application
 export default router;
