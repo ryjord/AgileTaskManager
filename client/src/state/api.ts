@@ -2,6 +2,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 // --- Types and Enums ---
 
+console.log('api.ts is being executed');
+
 export interface Project {
   project_ID: number;
   name: string;

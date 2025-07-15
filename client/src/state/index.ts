@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+console.log('index.ts is being executed');
+
 export interface initialStateTypes {
     isSidebarCollapsed: boolean;
     isDarkMode: boolean;

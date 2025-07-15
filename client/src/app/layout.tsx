@@ -1,4 +1,8 @@
 
+debugger;
+
+console.log('layout.tsx is being executed');
+
 //imports
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -22,6 +26,8 @@ const DashboardWrapper = dynamic(
 
 // For demonstration, hardcode 'en' or use Next.js i18n routing
 const locale = 'en';
+
+console.log(inter.className);
 
 export default function RootLayout({
   children,
