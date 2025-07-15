@@ -6,6 +6,7 @@ import ProjectHeader from "@/app/projects/ProjectHeader";
 import BoardView from '../BoardView';
 import List from '../ListView';
 import Timeline from "../TimelineView";
+import Table from '../TableView';
 
 // Type definition for Project component props
 type Props = {
@@ -32,6 +33,9 @@ const Project = ({ params }: Props) => {
     )}
     {activeTab === "Timeline" && (
      <Timeline project_ID={project_ID} setIsModalNewTaskOpen={setIsModalNewTaskOpen}/>
+    )}
+    {activeTab === "Table" && (
+     <Table project_ID={project_ID} setIsModalNewTaskOpen={setIsModalNewTaskOpen}/>
     )}
     </div>
   )
