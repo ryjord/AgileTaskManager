@@ -29,14 +29,12 @@ const ListView = ({project_ID, setIsModalNewTaskOpen}: ListProps) => {
    *  Render Board component
    *  @returns JSX
    */
-  console.log('Task IDs:', tasks?.data?.map(task => task.Task_ID));
-  console.log('Full tasks data:', tasks?.data);
   return (
     <div className="px-4 pb-8 xl:px-6">
       <div className="pt-5">
         <Header name="List"
           buttonComponent={
-            <button className="flex items-center rounded bg-blue-primary px-3 py-2 text-white hover:bg-blue-600"
+            <button className="flex items-center rounded bg-red-primary px-3 py-2 text-white hover:bg-red-600"
               onClick={() => setIsModalNewTaskOpen(true)}>
               Add Task
             </button>}isSmallText/>

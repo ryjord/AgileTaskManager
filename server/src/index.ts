@@ -11,6 +11,9 @@ import { Request, Response, NextFunction } from "express";
 /* Route import */
 import projectRoutes from "./routes/projectRoutes";
 import taskRoutes from "./routes/taskRoutes";
+import searchRoutes from "./routes/searchRoutes";
+import userRoutes from "./routes/userRoutes";
+import teamRoutes from "./routes/teamRoutes";
 
 /* configurations */
 const app = express();
@@ -39,6 +42,9 @@ app.get('/', (req, res) => {
 // usage cases
 app.use("/projects", projectRoutes);
 app.use("/tasks", taskRoutes);
+app.use("/search", searchRoutes);
+app.use("/users", userRoutes);
+app.use("/teams", teamRoutes);
 
 // Catch-all 404 handler
 app.use((req, res) => {

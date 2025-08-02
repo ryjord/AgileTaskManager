@@ -10,7 +10,6 @@ import { format } from "date-fns";
 import Image from "next/image";
 
 // Debug log to track component execution
-console.log('BoardView.tsx is being executed');
 
 /**
  * Type definition for Board component props
@@ -144,7 +143,7 @@ const TaskColumn = ({displayStatus,tasks,moveTask, setIsModalNewTaskOpen}: TaskC
 
   return (
     <div
-      ref={ref} className={`sl:py-4 rounded-lg py-2 xl:px-2 ${isOver ? "bg-blue-100 dark:bg-neutral-950" : ""}`}>
+      ref={ref} className={`sl:py-4 rounded-lg py-2 xl:px-2 ${isOver ? "bg-red-100 dark:bg-neutral-950" : ""}`}>
       {/* Column header */}
       <div className="mb-3 flex w-full">
         {/* Status indicator strip */}
@@ -203,7 +202,7 @@ const PriorityTag = ({ priority }: { priority: TaskType["priority"] }) => (
         : priority === "Medium"
         ? "bg-green-200 text-green-700"
         : priority === "Low"
-        ? "bg-blue-200 text-blue-700"
+        ? "bg-red-200 text-red-700"
         : "bg-gray-200 text-gray-700"
     }`}>
     {priority}
@@ -272,7 +271,7 @@ const Task = ({ task }: TaskProps) => {
             {task.priority && <PriorityTag priority={task.priority} />}
             <div className="flex gap-2">
               {taskTagsSplit.map((tag, idx) => (
-                <div key={`${task.Task_ID ?? "noid"}-tag-${tag.trim()}-${idx}`}className="rounded-full bg-blue-100 px-2 py-1 text-xs">
+                <div key={`${task.Task_ID ?? "noid"}-tag-${tag.trim()}-${idx}`}className="rounded-full bg-red-100 px-2 py-1 text-xs">
                   {tag}
                 </div>
               ))}

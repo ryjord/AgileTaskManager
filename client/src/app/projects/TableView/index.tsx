@@ -42,7 +42,7 @@ const columns: GridColDef[] = [
 // Add task button
 const AddTaskButton = ({ onClick }: { onClick: () => void }) => (
   <button
-    className="flex items-center rounded bg-blue-primary px-3 py-2 text-white hover:bg-blue-600"
+    className="flex items-center rounded bg-red-primary px-3 py-2 text-white hover:bg-red-600"
     onClick={onClick}
   >
     Add Task

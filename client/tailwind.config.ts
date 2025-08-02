@@ -12,23 +12,23 @@ const config: Config = {
       colors: {
         white: '#ffffff',
         gray: {
-          100: "#f3f4f6",
-          200: '#e5e7eb',
-          300: "#d1d5db",
-          500: "#6b7280",
-          700: "#375151",
-          800: "#1f2937"
+          100: "#f4f2f2",
+          200: '#eae3e4',
+          300: "#dbd0d0",
+          500: "#7f6b6c",
+          700: "#51373d",
+          800: "#381f23"
         },
         red: {
-          200: "#fdcb93",
-          400: "#fab560",
-          500: "#f63b82"
+          200: "#f99395",
+          400: "#fc7173",
+          500: "#ef3b3e"
         },
-        "dark-bg": "#101214",
-        "dark-secondary": "#1d1f21",
-        "dark-tertiary": "#3b3d40",
-        "red-primary": "#0275ff",
-        "stroke-dark": "#2d3135",
+        "dark-bg": "#141010",
+        "dark-secondary": "#211d1d",
+        "dark-tertiary": "#3f3a3a",
+        "red-primary": "#ff0228",
+        "stroke-dark": "#352d2d",
       }
     },
     backgroundImage: {

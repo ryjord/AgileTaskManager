@@ -101,7 +101,7 @@ const Timeline = ({ project_ID, setIsModalNewTaskOpen }: Props) => {
         </div>
         <div className="px-4 pb-5 pt-1">
           <button
-            className="flex items-center rounded bg-blue-primary px-3 py-2 text-white hover:bg-blue-600"
+            className="flex items-center rounded bg-red-primary px-3 py-2 text-white hover:bg-red-600"
             onClick={() => setIsModalNewTaskOpen(true)}
           >
             Add New Task

@@ -36,7 +36,7 @@ const SidebarLink = ({ href, icon: Icon, label}: SidebarLinkProps) => {
     <Link href={href} className="w-full">
         <div
             className={`relative flex cursor-pointer items-center gap-3 px-8 py-3 transition-colors hover:bg-gray-100 dark:bg-black dark:hover:bg-gray-700 ${
-                isActive ? 'bg-gray-100 text-white dark:bg-gray-600' : ''}`}
+                isActive ? 'bg-gray-100 text-white dark:bg-gray-700' : ''}`}
         >
             {isActive && (
                 <div className='absolute left-0 top-0 h-[100%] w-[5px] bg-red-200' />

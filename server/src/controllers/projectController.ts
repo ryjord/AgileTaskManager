@@ -15,7 +15,7 @@ export const getProjects = (prisma: PrismaClient) => async (
         // Parse and validate 'limit' query parameter, default to 10 if invalid or not provided
         const limit = (() => {
             const val = parseInt(req.query.limit as string);
-            if (isNaN(val) || val <= 0 || val > 100) return 10;
+            if (isNaN(val) || val <= 0 || val > 100) return 100; // default to 100 if not provided or invalid
             return val;
         })();
         // Parse and validate 'offset' query parameter, default to 0 if invalid or not provided

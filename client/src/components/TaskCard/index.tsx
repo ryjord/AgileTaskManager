@@ -16,25 +16,22 @@ const TaskCard = ({ task }: LineCardProps) => {
     <div className="mb-3 rounded bg-white p-4 shadow dark:bg-dark-secondary dark:text-white">
       {
         // Render attachments if the task has any
-        task.attachments && task.attachments.length > 0 && (
+        Array.isArray(task.attachments) && task.attachments.length > 0 && (
           <div>
             <strong>Attachments:</strong>
             <div className="flex flex-wrap">
-              {
-                // Render the first attachment as an image
-                // TODO: render all attachments, not just the first one
-                task.attachments && task.attachments.length > 0 && (
-                  <Image
-                    src={`/${task.attachments[0].fileURL}`}
-                    alt={task.attachments[0].fileName}
-                    width={400}
-                    height={200}
-                    className="rounded-md"
-                    priority
-                    style={{ width: 'auto', height: 'auto' }}
-                  />
-                )
-              }
+              {task.attachments.map((attachment: any, idx: number) => (
+                <Image
+                  key={attachment.fileURL || idx}
+                  src={attachment.fileURL ? `/${attachment.fileURL.replace(/^public\//, "")}` : "/default.jpg"}
+                  alt={attachment.fileName || 'attachment'}
+                  width={400}
+                  height={200}
+                  className="rounded-md mr-2 mb-2"
+                  priority
+                  style={{ width: 'auto', height: 'auto' }}
+                />
+              ))}
             </div>
           </div>
         )
@@ -42,20 +39,21 @@ const TaskCard = ({ task }: LineCardProps) => {
       {
         // Render properties of the task
         [
-          { label: 'Title', value: task.title },
+          { label: 'Title', value: task.title || 'Untitled Task' },
           { label: 'Description', value: task.description || 'No description provided' },
-          { label: 'Status', value: task.status },
-          { label: 'Priority', value: task.priority },
+          { label: 'Status', value: task.status || 'No status' },
+          { label: 'Priority', value: task.priority || 'No priority' },
           { label: 'Tags', value: task.tags || 'No tags' },
           { label: 'Start Date', value: task.startDate ? format(new Date(task.startDate), "P") : 'Not set' },
           { label: 'Due Date', value: task.dueDate ? format(new Date(task.dueDate), "P") : 'Not set' },
-          { label: 'Author', value: task.author ? task.author.username : 'Unknown' },
-          { label: 'Assignee', value: task.assignee ? task.assignee.username : 'Unassigned' },
+          { label: 'Author', value: task.author && task.author.username ? task.author.username : 'Unknown' },
+          { label: 'Assignee', value: task.assignee && task.assignee.username ? task.assignee.username : 'Unassigned' },
         ].map((item) => (
           <p key={item.label}>
-            <strong className={`w-28 flex-shrink-0 text-sm font-medium ${item.label ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'}`}>
+            <span className="w-28 flex-shrink-0 text-sm font-medium text-red-600 dark:text-red-400">
               {item.label}:
-            </strong> {item.value}
+            </span>
+            <span className="ml-1 text-black dark:text-white">{item.value}</span>
           </p>
         ))
       }
