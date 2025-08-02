@@ -27,6 +27,16 @@ export const dataGridSxStyles = (isDarkMode: boolean) => {
     },
     "& .MuiDataGrid-row": {
       borderBottom: `1px solid ${isDarkMode ? "#2d3135" : "e5e7eb"}`,
+      '&:hover': {
+        backgroundColor: isDarkMode ? '#7f1d1d' : '#fee2e2', // dark:red-900, light:red-100
+      },
+    },
+    // Priority cell coloring
+    '& .MuiDataGrid-cell[data-field="priority"]': {
+      color: isDarkMode ? '#f87171' : '#b91c1c', // red-400 (light), red-700 (dark)
+      fontWeight: 600,
+      backgroundColor: isDarkMode ? 'rgba(239,68,68,0.08)' : 'rgba(254,226,226,0.7)',
+      borderRadius: '6px',
     },
     "& .MuiDataGrid-withBorderColor": {
       borderColor: `${isDarkMode ? "#2d3135" : "e5e7eb"}`,

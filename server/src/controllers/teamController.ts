@@ -14,13 +14,13 @@ export const getTeams = async (req: Request, res: Response): Promise<void> => {
     const teamsWithUsernames = await Promise.all(
       teams.map(async (team: any) => {
         const productOwner = await prisma.user.findUnique({
-          where: { user_ID: team.productOwneruserId! },
+          where: { user_ID: team.productOwneruser_ID! },
           select: { username: true },
         });
 
         // map through project managers to get usernames
         const projectManager = await prisma.user.findUnique({
-          where: { user_ID: team.projectManageruserId! },
+          where: { user_ID: team.projectManageruser_ID! },
           select: { username: true },
         });
 
@@ -35,6 +35,7 @@ export const getTeams = async (req: Request, res: Response): Promise<void> => {
     // Send the response with teams and their usernames
     res.json(teamsWithUsernames);
   } catch (error: any) {
+    console.error('Error in getTeams:', error);
     res
       .status(500)
       .json({ message: `Error retrieving teams: ${error.message}` });
