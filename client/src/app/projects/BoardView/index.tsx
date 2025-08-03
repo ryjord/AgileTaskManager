@@ -49,10 +49,27 @@ const reverseStatusMap: Record<string, string> = {
  */
 const BoardView = ({ project_ID, setIsModalNewTaskOpen }: BoardProps) => {
   // Fetch tasks data using RTK Query hook
-  const { data: tasks, isLoading, error, refetch } = useGetTasksQuery({ project_ID: Number(project_ID) });
+  const { data: tasks, isLoading, error } = useGetTasksQuery({ project_ID: Number(project_ID) });
 
   // Mutation hook for updating task status
   const [updateTaskStatus] = useUpdateTaskStatusMutation();
+
+  const [localTasks, setLocalTasks] = React.useState<(TaskType & { displayStatus: string })[]>([]);
+
+  // Sync local state with fetched tasks
+  React.useEffect(() => {
+    if (Array.isArray(tasks?.data)) {
+      const processed = tasks.data.map(task => {
+        const id = (task as any).Task_ID ?? (task as any).task_ID;
+        return {
+          ...task,
+          Task_ID: id,
+          displayStatus: statusMap[task.status as string] || String(task.status),
+        };
+      });
+      setLocalTasks(processed);
+    }
+  }, [tasks]);
 
   /**
    * Process tasks data to ensure it's always an array and add displayStatus property
@@ -67,16 +84,29 @@ const BoardView = ({ project_ID, setIsModalNewTaskOpen }: BoardProps) => {
   /**
    * Handler for moving tasks between columns
    */
-  const moveTask = (Task_ID: number, toDisplayStatus: string) => {
-    // Input validation to prevent invalid updates
-    if (typeof Task_ID !== 'number' || isNaN(Task_ID)) {
-      console.error('Invalid Task_ID for moveTask:', Task_ID);
-      return;
-    }
-    // Convert display status to backend status before updating
-    updateTaskStatus({ Task_ID, status: reverseStatusMap[toDisplayStatus] || toDisplayStatus });
-  };
+    const moveTask = (Task_ID: number, toDisplayStatus: string) => {
+      if (typeof Task_ID !== 'number' || isNaN(Task_ID)) {
+        console.error('Invalid Task_ID for moveTask:', Task_ID);
+        return;
+      }
+          // update local state
+      setLocalTasks((prev) =>
+        prev.map((task) =>
+          task.Task_ID === Task_ID
+            ? { ...task, displayStatus: toDisplayStatus }
+            : task
+        )
+      );
 
+      // Send mutation to backend
+      updateTaskStatus({
+        Task_ID,
+        status: reverseStatusMap[toDisplayStatus] || toDisplayStatus,
+      }).unwrap().catch(err => {
+        console.error("Update failed:", err);
+        // Optionally revert changes here if needed
+      });
+    };
   // Loading and error states
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>An error occurred while fetching tasks</div>;
@@ -87,7 +117,14 @@ const BoardView = ({ project_ID, setIsModalNewTaskOpen }: BoardProps) => {
       {/* Responsive grid layout for columns */}
       <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 xl:grid-cols-4">
         {taskStatus.map((displayStatus) => (
-          <TaskColumn key={displayStatus} displayStatus={displayStatus} tasks={safeTasks} moveTask={moveTask} setIsModalNewTaskOpen={setIsModalNewTaskOpen}/>))}
+          <TaskColumn
+            key={displayStatus}
+            displayStatus={displayStatus}
+            tasks={localTasks}
+            moveTask={moveTask}
+            setIsModalNewTaskOpen={setIsModalNewTaskOpen}
+          />
+        ))}
       </div>
     </DndProvider>
   );

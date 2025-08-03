@@ -63,3 +63,4 @@ app.listen(port, () => {
   console.log(`Server Running On Port : ${port} `);
   console.log(`CORS allowed origins: http://localhost:3000`);
 });
+

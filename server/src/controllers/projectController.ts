@@ -102,3 +102,26 @@ export const createProject = (prisma: PrismaClient) => async (
         });
     }
 };
+
+/** 
+export const deleteProject = (prisma: PrismaClient) => async (req: Request, res: Response) => {
+  const { project_ID } = req.params;
+  if (!project_ID || isNaN(Number(project_ID))) {
+    return res.status(400).json({ message: "Invalid project ID" });
+  }
+
+  try {
+    const deletedProject = await prisma.project.delete({
+      where: { project_ID: Number(project_ID) },
+    });
+    res.status(200).json({ success: true, data: deletedProject });
+  } catch (error) {
+    console.error('Error deleting project:', error);
+    res.status(500).json({
+      message: "An error occurred while deleting the project.",
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
+};
+
+*/
