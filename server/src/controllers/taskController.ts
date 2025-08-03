@@ -237,5 +237,33 @@ const updateTaskStatus = (prisma: PrismaClient) => async (
     }
 };
 
+
+const getUserTasks = (prisma: PrismaClient) => async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { user_ID } = req.params;
+  try {
+    const tasks = await prisma.task.findMany({
+      where: {
+        OR: [
+          { author_user_ID: Number(user_ID) },
+          { assigned_user_ID: Number(user_ID) },
+        ],
+      },
+      include: {
+        author: true,
+        assignee: true,
+      },
+    });
+    res.json(tasks);
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error retrieving user's tasks: ${error.message}` });
+  }
+};
+
+
 // Export the controller functions for use in routes
-export { getTasks, updateTaskStatus, createTasks };
+export { getTasks, updateTaskStatus, createTasks, getUserTasks };

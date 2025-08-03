@@ -28,11 +28,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // CORS: Allow requests from frontend (localhost:3000) during development
-app.use(cors({
-  origin: ['http://localhost:3000'],
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  credentials: true
-}));
+app.use(cors());
 
 /* Routes */
 app.get('/', (req, res) => {

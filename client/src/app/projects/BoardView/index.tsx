@@ -4,7 +4,7 @@ import type { DropTargetMonitor, DragSourceMonitor } from "react-dnd";
 import React from "react";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useGetTasksQuery, useUpdateTaskStatusMutation, Task as TaskType } from "@/state/api";
+import { useGetTasksQuery, useUpdateTaskStatusMutation, useDeleteProjectMutation, Task as TaskType } from "@/state/api";
 import { EllipsisVertical, MessageSquareMore, Plus } from "lucide-react";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -49,7 +49,7 @@ const reverseStatusMap: Record<string, string> = {
  */
 const BoardView = ({ project_ID, setIsModalNewTaskOpen }: BoardProps) => {
   // Fetch tasks data using RTK Query hook
-  const { data: tasks, isLoading, error } = useGetTasksQuery({ project_ID: Number(project_ID) });
+  const { data: tasks, isLoading, error, refetch } = useGetTasksQuery({ project_ID: Number(project_ID) });
 
   // Mutation hook for updating task status
   const [updateTaskStatus] = useUpdateTaskStatusMutation();
@@ -81,15 +81,15 @@ const BoardView = ({ project_ID, setIsModalNewTaskOpen }: BoardProps) => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>An error occurred while fetching tasks</div>;
 
+
   return (
-      // DndProvider enables drag and drop functionality for the board
-      <DndProvider backend={HTML5Backend}>
-        {/* Responsive grid layout for columns */}
-        <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 xl:grid-cols-4">
-          {taskStatus.map((displayStatus) => (
-            <TaskColumn key={displayStatus} displayStatus={displayStatus} tasks={safeTasks} moveTask={moveTask} setIsModalNewTaskOpen={setIsModalNewTaskOpen}/>))}
-        </div>
-      </DndProvider>
+    <DndProvider backend={HTML5Backend}>
+      {/* Responsive grid layout for columns */}
+      <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 xl:grid-cols-4">
+        {taskStatus.map((displayStatus) => (
+          <TaskColumn key={displayStatus} displayStatus={displayStatus} tasks={safeTasks} moveTask={moveTask} setIsModalNewTaskOpen={setIsModalNewTaskOpen}/>))}
+      </div>
+    </DndProvider>
   );
 };
 
