@@ -17,12 +17,6 @@ const Timeline = () => {
     const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
     const { data: projects, isLoading, isError } = useGetProjectsQuery();
 
-  // redine array for data objects of projects
-    const projectArray: Project[] = Array.isArray(projects)
-    ? projects
-    : (projects && typeof projects === "object" && "data" in projects && Array.isArray((projects as any).data))
-      ? (projects as any).data
-      : [];
 
     // Define display options for the Gantt chart
     const [displayOptions, setDisplayOptions] = useState<DisplayOption>({
@@ -32,18 +26,25 @@ const Timeline = () => {
 
     // ganttchart variables initialization
     const ganttTasks = useMemo(() => {
+          // redine array for data objects of projects
+      const projectArray: Project[] = Array.isArray(projects)
+      ? projects
+      : (projects && typeof projects === "object" && "data" in projects && Array.isArray((projects as any).data))
+        ? (projects as any).data
+        : [];
+
         return (
-            projectArray.map((project: Project) => ({
-                start: new Date(project.startDate as string),
-                end: new Date(project.endDate as string),
-                name: project.name,
-                id: `Project-${project.project_ID}`,
-                type: "project" as TaskTypeItems,
-                progress: 50,
-                isDisabled: false,
-            })) || []
+          projectArray.map((project: Project) => ({
+            start: new Date(project.startDate as string),
+            end: new Date(project.endDate as string),
+            name: project.name,
+            id: `Project-${project.project_ID}`,
+            type: "project" as TaskTypeItems,
+            progress: 50,
+            isDisabled: false,
+          })) || []
         );
-    }, [projectArray]);
+      }, [projects]);
 
     // Handle view mode change
     const handleViewModeChange = (

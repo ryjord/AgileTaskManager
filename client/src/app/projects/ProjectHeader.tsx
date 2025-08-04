@@ -173,4 +173,6 @@ const TabButton = React.memo(({ name, icon, setActiveTab, activeTab }: TabButton
   );
 });
 
+TabButton.displayName = 'TabButton';
+
 export default ProjectHeader;
