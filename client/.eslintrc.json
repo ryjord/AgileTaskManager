@@ -1,11 +1,7 @@
 {
   "extends": "next/core-web-vitals",
   "rules": {
-    "unknownAtRules": [
-      "error",
-      {
-        "ignoreAtRules": ["@tailwind", "@apply"]
-      }
-    ]
+    "unknownAtRules": 
+      "off"
   }
 }

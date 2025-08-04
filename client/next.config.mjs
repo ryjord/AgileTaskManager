@@ -11,7 +11,6 @@ const nextConfig = {
     minimumCacheTTL: 86400 // 1 day cache
   },
   experimental: {
-    optimizeFonts: false,
   },
 };
 
