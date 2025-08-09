@@ -1,7 +1,7 @@
 import { PrismaClient, Prisma } from "@prisma/client";
 import fs from "fs";
 import path from "path";
-
+// Import the PrismaClient
 const prisma = new PrismaClient();
 
 // Define the directory where your JSON data files are stored
