@@ -1,8 +1,17 @@
 {
   "version": 2,
-  "buildCommand": "npm install && prisma generate --data-proxy && npm run build",
+  "buildCommand": "npm run build",
   "builds": [
-    { "src": "api/index.ts", "use": "@vercel/node" }
+    {
+      "src": "api/index.ts",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "node_modules/.prisma/**/*",
+          "node_modules/@prisma/**/*"
+        ]
+      }
+    }
   ],
   "routes": [
     { "src": "/(.*)", "dest": "/api/index.ts" }
