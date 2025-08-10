@@ -142,7 +142,7 @@ const ReusablePriorityPage = ({ priority }: Props) => {
               rows={filteredTasks}
               columns={columns}
               checkboxSelection
-              getRowId={(row) => row.id}
+              getRowId={(row) => row.Task_ID}
               className={dataGridClassNames}
               sx={dataGridSxStyles(isDarkMode)}
             />
