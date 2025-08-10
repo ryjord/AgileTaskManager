@@ -2,8 +2,9 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import apiApp from './app';
 
 export default async (req: VercelRequest, res: VercelResponse) => {
-  // Convert Vercel request to Express-like format
+  // Convert Vercel request to Express format
   const expressReq = {
+    ...req,
     method: req.method,
     url: req.url,
     headers: req.headers,
@@ -12,57 +13,81 @@ export default async (req: VercelRequest, res: VercelResponse) => {
     params: {},
     originalUrl: req.url,
     path: req.url?.split('?')[0] || '/',
-    // Add other Express request properties as needed
+    // Add other Express properties as needed
   } as any;
 
-  // Create Express-like response object
+  // Create a Vercel-compatible response wrapper
   const expressRes = {
-    statusCode: 200,
-    headers: {} as Record<string, string>,
+    _headers: {} as Record<string, string>,
+    _statusCode: 200,
+    
     setHeader: function(name: string, value: string) {
-      this.headers[name] = value;
+      this._headers[name.toLowerCase()] = value;
+      res.setHeader(name, value);
       return this;
     },
+    
+    getHeader: function(name: string) {
+      return this._headers[name.toLowerCase()];
+    },
+    
+    removeHeader: function(name: string) {
+      delete this._headers[name.toLowerCase()];
+      res.removeHeader(name);
+      return this;
+    },
+    
     status: function(code: number) {
-      this.statusCode = code;
+      this._statusCode = code;
       return this;
     },
-    json: (body: any) => {
-      res.status(expressRes.statusCode);
-      Object.entries(expressRes.headers).forEach(([key, value]) => {
+    
+    json: function(body: any) {
+      res.status(this._statusCode);
+      Object.entries(this._headers).forEach(([key, value]) => {
         res.setHeader(key, value as string);
       });
       return res.json(body);
     },
-    send: (body: any) => {
-      res.status(expressRes.statusCode);
-      Object.entries(expressRes.headers).forEach(([key, value]) => {
+    
+    send: function(body: any) {
+      res.status(this._statusCode);
+      Object.entries(this._headers).forEach(([key, value]) => {
         res.setHeader(key, value as string);
       });
       return res.send(body);
     },
-    end: () => {
-      res.status(expressRes.statusCode);
-      Object.entries(expressRes.headers).forEach(([key, value]) => {
+    
+    end: function() {
+      res.status(this._statusCode);
+      Object.entries(this._headers).forEach(([key, value]) => {
         res.setHeader(key, value as string);
       });
       return res.end();
     }
   } as any;
 
-  // Mock next function
+  // Next function for Express middleware
   const next = (err?: any) => {
     if (err) {
-      console.error('Error in request handler:', err);
-      res.status(500).json({ error: err.message || 'Internal server error' });
+      console.error('Middleware error:', err);
+      res.status(500).json({ 
+        error: err.message || 'Internal server error',
+        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+      });
     }
   };
 
-  // Handle the request
   try {
+    // Handle the request
     await apiApp(expressReq, expressRes, next);
   } catch (err) {
-    console.error('Unhandled error:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Unhandled application error:', err);
+    res.status(500).json({ 
+      error: 'Internal server error',
+      ...(process.env.NODE_ENV === 'development' && { 
+        details: err instanceof Error ? err.message : String(err) 
+      })
+    });
   }
 };

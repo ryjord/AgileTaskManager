@@ -1,7 +1,6 @@
 import express, { Request, Response, NextFunction, Application } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import helmet from "helmet";
 import morgan from "morgan";
 
 import projectRoutes from "../src/routes/projectRoutes";
@@ -17,54 +16,61 @@ const allowedOrigins = [
 
 const apiApp: Application = express();
 
-apiApp.use(express.json());
-apiApp.use(
-  helmet({
-    crossOriginResourcePolicy: { policy: 'cross-origin' }
-  })
-);
+// Replace helmet with manual security headers
+apiApp.use((req, res, next) => {
+  // Basic security headers
+  res.setHeader('X-DNS-Prefetch-Control', 'off');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  
+  // Cross-Origin headers
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.some(o => 
+    typeof o === 'string' ? o === origin : o.test(origin)
+  )) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
+  
+  next();
+});
+
 apiApp.use(morgan("dev"));
+apiApp.use(express.json());
 apiApp.use(bodyParser.json());
 apiApp.use(bodyParser.urlencoded({ extended: false }));
 
 apiApp.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    const allowed = allowedOrigins.some(o =>
-      typeof o === 'string' ? o === origin : o.test(origin)
-    );
-    if (!allowed) {
-      return callback(new Error(`CORS policy does not allow origin: ${origin}`), false);
-    }
-    return callback(null, true);
-  },
+  origin: allowedOrigins,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // API Root
-apiApp.get('/', (req: Request, res: Response) => {
+apiApp.get('/api', (req: Request, res: Response) => {
   res.json({
     message: "API Root. Available endpoints:",
     endpoints: [
-      '/projects',
-      '/tasks',
-      '/search',
-      '/users',
-      '/teams',
-      '/priority/:level'
+      '/api/projects',
+      '/api/tasks',
+      '/api/search',
+      '/api/users',
+      '/api/teams',
+      '/api/priority/:level'
     ]
   });
 });
 
-apiApp.use('/projects', projectRoutes);
-apiApp.use('/tasks', taskRoutes);
-apiApp.use('/search', searchRoutes);
-apiApp.use('/users', userRoutes);
-apiApp.use('/teams', teamRoutes);
+// API Routes with /api prefix
+apiApp.use('/api/projects', projectRoutes);
+apiApp.use('/api/tasks', taskRoutes);
+apiApp.use('/api/search', searchRoutes);
+apiApp.use('/api/users', userRoutes);
+apiApp.use('/api/teams', teamRoutes);
 
-apiApp.get('/priority/:level', (req: Request, res: Response) => {
+apiApp.get('/api/priority/:level', (req: Request, res: Response) => {
   const { level } = req.params;
   res.json({
     status: 'success',
@@ -78,9 +84,6 @@ apiApp.get('/favicon.ico', (req: Request, res: Response) => {
 
 // 404 handler
 apiApp.use((req: Request, res: Response) => {
-  const corsOrigin = allowedOrigins.find(o => typeof o === 'string') as string;
-  res.setHeader('Access-Control-Allow-Origin', corsOrigin);
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.status(404).json({
     status: 'error',
     message: 'Endpoint not found',
@@ -88,17 +91,14 @@ apiApp.use((req: Request, res: Response) => {
   });
 });
 
-
 // Error handler
 apiApp.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  const corsOrigin = allowedOrigins.find(o => typeof o === 'string') as string;
-  res.setHeader('Access-Control-Allow-Origin', corsOrigin);
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
   console.error(err.stack);
   res.status(500).json({
     status: 'error',
     error: 'Internal Server Error',
-    message: err.message
+    message: err.message,
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
   });
 });
 
