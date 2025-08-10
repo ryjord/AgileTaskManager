@@ -98,6 +98,8 @@ app.get('/favicon.ico', (req: Request, res: Response) => {
 
 // 404 handler
 app.use((req: Request, res: Response) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://agile-task-manager-client.vercel.app');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.status(404).json({
     status: 'error',
     message: 'Endpoint not found',
@@ -107,6 +109,8 @@ app.use((req: Request, res: Response) => {
 
 // Error handling middleware
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://agile-task-manager-client.vercel.app');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   console.error(err.stack);
   res.status(500).json({ 
     status: 'error',
