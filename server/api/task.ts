@@ -10,6 +10,9 @@ function isTaskPriority(value: any): value is TaskPriority {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   if (req.method === 'GET') {
     const { project_ID } = req.query;
     const projectIdNum = Number(project_ID);
