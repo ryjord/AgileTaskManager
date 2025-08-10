@@ -28,7 +28,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // CORS Configuration
 const allowedOrigins = [
-  'http://localhost:3000',
   'https://agile-task-manager-client.vercel.app'
 ];
 
