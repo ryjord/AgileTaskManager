@@ -82,7 +82,7 @@ export interface Team {
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({ 
-    baseUrl: process.env.NEXT_PUBLIC_API_URL || 'https://agile-task-manager-server.vercel.app/api/search',
+    baseUrl: process.env.NEXT_PUBLIC_API_URL || 'https://agile-task-manager-server.vercel.app/src/index.ts',
     prepareHeaders: (headers) => {
       // Keep your existing auth logic if you have any
       const token = localStorage.getItem('token');
