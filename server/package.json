@@ -29,6 +29,8 @@
   },
   "dependencies": {
     "@prisma/extension-accelerate": "^2.0.2",
+    "@prisma/client": "latest",
+    "prisma": "latest",
     "@vercel/node": "^5.3.11",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
