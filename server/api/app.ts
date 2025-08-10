@@ -12,7 +12,7 @@ import teamRoutes from "../src/routes/teamRoutes";
 
 const allowedOrigins = [
   'https://agile-task-manager-client.vercel.app',
-  //'http://localhost:3000'
+  /\.vercel\.app$/  // regex for any Vercel preview deployment
 ];
 
 const apiApp: Application = express();
@@ -30,9 +30,11 @@ apiApp.use(bodyParser.urlencoded({ extended: false }));
 apiApp.use(cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
-      return callback(new Error(msg), false);
+    const allowed = allowedOrigins.some(o =>
+      typeof o === 'string' ? o === origin : o.test(origin)
+    );
+    if (!allowed) {
+      return callback(new Error(`CORS policy does not allow origin: ${origin}`), false);
     }
     return callback(null, true);
   },
@@ -76,7 +78,8 @@ apiApp.get('/favicon.ico', (req: Request, res: Response) => {
 
 // 404 handler
 apiApp.use((req: Request, res: Response) => {
-  res.setHeader('Access-Control-Allow-Origin', allowedOrigins[0]);
+  const corsOrigin = allowedOrigins.find(o => typeof o === 'string') as string;
+  res.setHeader('Access-Control-Allow-Origin', corsOrigin);
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.status(404).json({
     status: 'error',
@@ -85,9 +88,11 @@ apiApp.use((req: Request, res: Response) => {
   });
 });
 
+
 // Error handler
 apiApp.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  res.setHeader('Access-Control-Allow-Origin', allowedOrigins[0]);
+  const corsOrigin = allowedOrigins.find(o => typeof o === 'string') as string;
+  res.setHeader('Access-Control-Allow-Origin', corsOrigin);
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   console.error(err.stack);
   res.status(500).json({
