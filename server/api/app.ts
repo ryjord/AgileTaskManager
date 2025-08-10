@@ -4,11 +4,11 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 
-import projectRoutes from "../src/routes/projectRoutes";
-import taskRoutes from "../src/routes/taskRoutes";
-import searchRoutes from "../src/routes/searchRoutes";
-import userRoutes from "../src/routes/userRoutes";
-import teamRoutes from "../src/routes/teamRoutes";
+import projectRoutes from "./routes/projectRoutes";
+import taskRoutes from "./routes/taskRoutes";
+import searchRoutes from "./routes/searchRoutes";
+import userRoutes from "./routes/userRoutes";
+import teamRoutes from "./routes/teamRoutes";
 
 const allowedOrigins = [
   'https://agile-task-manager-client.vercel.app',
@@ -58,11 +58,11 @@ apiApp.get('/', (req: Request, res: Response) => {
   });
 });
 
-apiApp.use('/projects', projectRoutes);
-apiApp.use('/tasks', taskRoutes);
-apiApp.use('/search', searchRoutes);
-apiApp.use('/users', userRoutes);
-apiApp.use('/teams', teamRoutes);
+apiApp.use('routes/projects', projectRoutes);
+apiApp.use('routes/tasks', taskRoutes);
+apiApp.use('routes/search', searchRoutes);
+apiApp.use('routes/users', userRoutes);
+apiApp.use('routes/teams', teamRoutes);
 
 apiApp.get('/priority/:level', (req: Request, res: Response) => {
   const { level } = req.params;
