@@ -11,7 +11,8 @@ import userRoutes from "../routes/userRoutes";
 import teamRoutes from "../routes/teamRoutes";
 
 const allowedOrigins = [
-  'https://agile-task-manager-client.vercel.app'
+  'https://agile-task-manager-client.vercel.app',
+  //'http://localhost:3000' 
 ];
 
 const apiApp: Application = express();
@@ -41,7 +42,7 @@ apiApp.use(cors({
 }));
 
 // API Endpoints
-apiApp.get('/', (req: Request, res: Response) => {
+apiApp.get('/api', (req: Request, res: Response) => {
   res.json({
     message: "API Root. Available endpoints:",
     endpoints: [
