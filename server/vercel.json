@@ -5,6 +5,5 @@
   ],
   "routes": [
     { "src": "/(.*)", "dest": "/api/index.ts" }
-  ],
-  "buildCommand": "prisma generate --data-proxy && rimraf dist && npx tsc"
+  ]
 }
