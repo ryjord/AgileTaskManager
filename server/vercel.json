@@ -1,10 +1,14 @@
 {
   "version": 2,
-  "buildCommand": "prisma generate --data-proxy",
   "builds": [
     { "src": "api/index.ts", "use": "@vercel/node" }
   ],
   "routes": [
     { "src": "/(.*)", "dest": "/api/index.ts" }
-  ]
+  ],
+  "build": {
+    "env": {
+      "PRISMA_GENERATE_DATAPROXY": "true"
+    }
+  }
 }
