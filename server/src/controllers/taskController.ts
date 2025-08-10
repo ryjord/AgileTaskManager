@@ -1,5 +1,22 @@
 import { Request, Response } from "express";
-import { PrismaClient, TaskStatus, TaskPriority } from "@prisma/client";
+import { PrismaClient} from "@prisma/client";
+
+
+enum TaskStatus {
+  TODO = "TODO",
+  IN_PROGRESS = "IN_PROGRESS",
+  DONE = "DONE",
+  REVIEW = "REVIEW",
+}
+
+enum TaskPriority {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+  CRITICAL = "CRITICAL",
+  BACKLOG = "BACKLOG",
+}
+
 
 /**
  * Helper function to check if a value is a valid TaskStatus enum value.
