@@ -4,15 +4,15 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 
-import projectRoutes from "../routes/projectRoutes";
-import taskRoutes from "../routes/taskRoutes";
-import searchRoutes from "../routes/searchRoutes";
-import userRoutes from "../routes/userRoutes";
-import teamRoutes from "../routes/teamRoutes";
+import projectRoutes from "../src/routes/projectRoutes";
+import taskRoutes from "../src/routes/taskRoutes";
+import searchRoutes from "../src/routes/searchRoutes";
+import userRoutes from "../src/routes/userRoutes";
+import teamRoutes from "../src/routes/teamRoutes";
 
 const allowedOrigins = [
   'https://agile-task-manager-client.vercel.app',
-  //'http://localhost:3000' 
+  //'http://localhost:3000'
 ];
 
 const apiApp: Application = express();
@@ -41,17 +41,17 @@ apiApp.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// API Endpoints
-apiApp.get('/api', (req: Request, res: Response) => {
+// API Root
+apiApp.get('/', (req: Request, res: Response) => {
   res.json({
     message: "API Root. Available endpoints:",
     endpoints: [
-      '/api/projects',
-      '/api/tasks',
-      '/api/search',
-      '/api/users',
-      '/api/teams',
-      '/api/priority/:level'
+      '/projects',
+      '/tasks',
+      '/search',
+      '/users',
+      '/teams',
+      '/priority/:level'
     ]
   });
 });
@@ -66,14 +66,10 @@ apiApp.get('/priority/:level', (req: Request, res: Response) => {
   const { level } = req.params;
   res.json({
     status: 'success',
-    data: {
-      level,
-      tasks: []
-    }
+    data: { level, tasks: [] }
   });
 });
 
-// Favicon handler
 apiApp.get('/favicon.ico', (req: Request, res: Response) => {
   res.status(204).end();
 });
@@ -89,7 +85,7 @@ apiApp.use((req: Request, res: Response) => {
   });
 });
 
-// Error handling middleware
+// Error handler
 apiApp.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.setHeader('Access-Control-Allow-Origin', allowedOrigins[0]);
   res.setHeader('Access-Control-Allow-Credentials', 'true');

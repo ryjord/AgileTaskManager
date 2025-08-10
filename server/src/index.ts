@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express, { Request, Response, Application } from "express";
-import apiApp from "./api/index";
+import apiApp from "../api/app";
 
 const app: Application = express();
 
