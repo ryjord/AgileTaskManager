@@ -19,7 +19,7 @@
     "@types/express": "^5.0.3",
     "@types/morgan": "^1.9.10",
     "@types/next": "^8.0.7",
-    "@types/node": "^24.0.10",
+    "@types/node": "^24.2.1",
     "concurrently": "^9.2.0",
     "nodemon": "^3.1.10",
     "prisma": "^6.13.0",
@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@prisma/extension-accelerate": "^2.0.2",
+    "@vercel/node": "^5.3.11",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^17.0.1",
