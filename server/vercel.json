@@ -9,7 +9,8 @@
         "includeFiles": [
           "node_modules/.prisma/**/*",
           "node_modules/@prisma/**/*",
-          "src/routes/**/*"
+          "src/routes/**/*",
+          "prisma/seedData/**/*"
         ]
       }
     }
