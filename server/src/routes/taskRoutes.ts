@@ -1,6 +1,6 @@
 import { Router } from "express";
 // Import controller functions for handling task-related requests
-import { createTasks, getTasks, updateTaskStatus } from "../controllers/taskController";
+import { createTasks, getTasks, updateTaskStatus, getUserTasks } from "../controllers/taskController";
 // Import PrismaClient for database access
 import { PrismaClient } from "@prisma/client";
 
@@ -24,6 +24,11 @@ router.post("/", createTasks(prisma));
 // Description: Update the status of a specific task identified by task_ID.
 // Controller: updateTaskStatus handles validation, existence check, update, and response.
 router.patch("/:task_ID/status", updateTaskStatus(prisma));
+
+// Route: GET /user/:user_ID
+// Description: Fetch every task authored by or assigned to a user. Declared
+// before the parameterised task routes so "user" is not read as a task_ID.
+router.get("/user/:user_ID", getUserTasks(prisma));
 
 // Export the configured router for use in the main application
 export default router;
