@@ -1,6 +1,7 @@
 // import
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import { isDatabaseUnreachable, seededUsers } from "../../lib/seedFallback";
 
 // Initialize Prisma Client
 const prisma = new PrismaClient();
@@ -11,15 +12,29 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
     const users = await prisma.user.findMany();
     res.json(users);
   } catch (error: any) {
+    if (isDatabaseUnreachable(error)) {
+      res.json(seededUsers());
+      return;
+    }
+    console.error("userController:", { message: error instanceof Error ? error.message : String(error) });
     res
       .status(500)
-      .json({ message: `Error retrieving users: ${error.message}` });
+      .json({ message: "Error retrieving users." });
   }
 };
 
 // Get user by cognito ID
 export const getUser = async (req: Request, res: Response): Promise<void> => {
-  const { cognitoId } = req.params;
+  // Express types a route param as string | string[]; Prisma needs a string.
+  const cognitoId = Array.isArray(req.params.cognitoId)
+    ? req.params.cognitoId[0]
+    : req.params.cognitoId;
+
+  if (!cognitoId) {
+    res.status(400).json({ message: "A cognitoId is required" });
+    return;
+  }
+
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -27,12 +42,17 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
       },
     });
 
-    // If user not found, return 404
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+      return;
+    }
+
     res.json(user);
   } catch (error: any) {
+    console.error("userController:", { message: error instanceof Error ? error.message : String(error) });
     res
       .status(500)
-      .json({ message: `Error retrieving user: ${error.message}` });
+      .json({ message: "Error retrieving user." });
   }
 };
 
@@ -55,8 +75,9 @@ export const postUser = async (req: Request, res: Response) => {
     });
     res.json({ message: "User Created Successfully", newUser });
   } catch (error: any) {
+    console.error("userController:", { message: error instanceof Error ? error.message : String(error) });
     res
       .status(500)
-      .json({ message: `Error retrieving users: ${error.message}` });
+      .json({ message: "Error creating user." });
   }
 };
