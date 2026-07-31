@@ -1,6 +1,7 @@
 // Import
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
+import { isDatabaseUnreachable, seededTeams } from "../../lib/seedFallback";
 
 // Initialize Prisma Client
 const prisma = new PrismaClient();
@@ -35,9 +36,13 @@ export const getTeams = async (req: Request, res: Response): Promise<void> => {
     // Send the response with teams and their usernames
     res.json(teamsWithUsernames);
   } catch (error: any) {
+    if (isDatabaseUnreachable(error)) {
+      res.json(seededTeams());
+      return;
+    }
     console.error('Error in getTeams:', error);
     res
       .status(500)
-      .json({ message: `Error retrieving teams: ${error.message}` });
+      .json({ message: "Error retrieving teams." });
   }
 };

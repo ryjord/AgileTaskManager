@@ -2,6 +2,7 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import Fuse from "fuse.js";
+import { isDatabaseUnreachable, seededSearch } from "../../lib/seedFallback";
 
 // Initialize Prisma Client
 const prisma = new PrismaClient();
@@ -119,8 +120,13 @@ export const search = async (req: Request, res: Response): Promise<void> => {
     });
     res.json({ tasks, projects, users });
   } catch (error: any) {
+    console.error("searchController:", { message: error instanceof Error ? error.message : String(error) });
+    if (isDatabaseUnreachable(error)) {
+      res.json(seededSearch(String(query ?? "")));
+      return;
+    }
     res
       .status(500)
-      .json({ message: `Error performing search: ${error.message}` });
+      .json({ message: "Error performing search." });
   }
 };

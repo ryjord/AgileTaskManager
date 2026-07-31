@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient} from "@prisma/client";
+import { isDatabaseUnreachable, seededTasks, seededTasksByUser } from "../../lib/seedFallback";
 
 
 enum TaskStatus {
@@ -53,20 +54,21 @@ const getTasks = (prisma: PrismaClient) => async (
         return;
     }
 
-    try {
-        // Parse and validate 'limit' query parameter, default to 10 if invalid or not provided
-        const limit = (() => {
-            const val = parseInt(req.query.limit as string);
-            if (isNaN(val) || val <= 0 || val > 100) return 10;
-            return val;
-        })();
+    // Parse and validate 'limit' query parameter, default to 10 if invalid or not provided
+    const limit = (() => {
+        const val = parseInt(req.query.limit as string);
+        if (isNaN(val) || val <= 0 || val > 100) return 10;
+        return val;
+    })();
 
-        // Parse and validate 'offset' query parameter, default to 0 if invalid or not provided
-        const offset = (() => {
-            const val = parseInt(req.query.offset as string);
-            if (isNaN(val) || val < 0) return 0;
-            return val;
-        })();
+    // Parse and validate 'offset' query parameter, default to 0 if invalid or not provided
+    const offset = (() => {
+        const val = parseInt(req.query.offset as string);
+        if (isNaN(val) || val < 0) return 0;
+        return val;
+    })();
+
+    try {
 
         // Fetch tasks and total count concurrently for better performance
         const [tasks, total] = await Promise.all([
@@ -103,6 +105,10 @@ const getTasks = (prisma: PrismaClient) => async (
     } catch (error) {
         // Log only sanitized error message to avoid leaking sensitive info
         console.error('Error fetching tasks:', { message: error instanceof Error ? error.message : String(error) });
+        if (isDatabaseUnreachable(error)) {
+            res.status(200).json(seededTasks(projectIdNum, limit, offset));
+            return;
+        }
         res.status(500).json({
             message: "An error occurred while processing your request."
         });
@@ -275,9 +281,14 @@ const getUserTasks = (prisma: PrismaClient) => async (
     });
     res.json(tasks);
   } catch (error: any) {
+    console.error("taskController:", { message: error instanceof Error ? error.message : String(error) });
+    if (isDatabaseUnreachable(error)) {
+      res.json(seededTasksByUser(Number(user_ID)));
+      return;
+    }
     res
       .status(500)
-      .json({ message: `Error retrieving user's tasks: ${error.message}` });
+      .json({ message: "Error retrieving user's tasks." });
   }
 };
 

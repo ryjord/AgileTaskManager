@@ -2,6 +2,7 @@
 // Controller for handling project-related API requests
 import { PrismaClient } from "@prisma/client";
 import { Response, Request } from "express";
+import { isDatabaseUnreachable, seededProjects } from "../../lib/seedFallback";
 
 /**
  * Returns an Express handler to fetch a paginated list of projects from the database.
@@ -11,19 +12,20 @@ export const getProjects = (prisma: PrismaClient) => async (
     req: Request,
     res: Response
 ): Promise<void> => {
+    // Parse and validate 'limit' query parameter, default to 10 if invalid or not provided
+    const limit = (() => {
+        const val = parseInt(req.query.limit as string);
+        if (isNaN(val) || val <= 0 || val > 100) return 100; // default to 100 if not provided or invalid
+        return val;
+    })();
+    // Parse and validate 'offset' query parameter, default to 0 if invalid or not provided
+    const offset = (() => {
+        const val = parseInt(req.query.offset as string);
+        if (isNaN(val) || val < 0) return 0;
+        return val;
+    })();
+
     try {
-        // Parse and validate 'limit' query parameter, default to 10 if invalid or not provided
-        const limit = (() => {
-            const val = parseInt(req.query.limit as string);
-            if (isNaN(val) || val <= 0 || val > 100) return 100; // default to 100 if not provided or invalid
-            return val;
-        })();
-        // Parse and validate 'offset' query parameter, default to 0 if invalid or not provided
-        const offset = (() => {
-            const val = parseInt(req.query.offset as string);
-            if (isNaN(val) || val < 0) return 0;
-            return val;
-        })();
 
         // Fetch projects from the database with pagination and explicit field selection
         const projects = await prisma.project.findMany({
@@ -49,11 +51,13 @@ export const getProjects = (prisma: PrismaClient) => async (
             }
         });
     } catch (error) {
-        // Log and respond with error if fetching fails
-        console.error('Error fetching projects:', error);
+        console.error('Error fetching projects:', { message: error instanceof Error ? error.message : String(error) });
+        if (isDatabaseUnreachable(error)) {
+            res.status(200).json(seededProjects(limit, offset));
+            return;
+        }
         res.status(500).json({
-            message: "An error occurred while processing your request.",
-            error: error instanceof Error ? error.message : String(error)
+            message: "An error occurred while processing your request."
         });
     }
 };
@@ -97,8 +101,7 @@ export const createProject = (prisma: PrismaClient) => async (
         // Log and respond with error if creation fails
         console.error('Error creating projects:', error);
         res.status(500).json({
-            message: "An error occurred while processing your request.",
-            error: error instanceof Error ? error.message : String(error)
+            message: "An error occurred while processing your request."
         });
     }
 };
@@ -118,8 +121,7 @@ export const deleteProject = (prisma: PrismaClient) => async (req: Request, res:
   } catch (error) {
     console.error('Error deleting project:', error);
     res.status(500).json({
-      message: "An error occurred while deleting the project.",
-      error: error instanceof Error ? error.message : String(error),
+      message: "An error occurred while deleting the project."
     });
   }
 };
