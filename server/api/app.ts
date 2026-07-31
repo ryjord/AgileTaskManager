@@ -2,17 +2,13 @@ import express, { Request, Response, NextFunction, Application } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
+import helmet from "helmet";
 
 const apiApp: Application = express();
 
-// Security headers middleware (Helmet replacement)
-apiApp.use((req, res, next) => {
-  res.setHeader('X-DNS-Prefetch-Control', 'off');
-  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  next();
-});
+// helmet was already a dependency; this replaces a hand-rolled subset of the
+// same headers and additionally covers HSTS and cross-origin policies.
+apiApp.use(helmet());
 
 apiApp.use(morgan("dev"));
 apiApp.use(express.json());
@@ -39,8 +35,7 @@ apiApp.get('/', (req: Request, res: Response) => {
       '/tasks',
       '/search',
       '/users',
-      '/teams',
-      '/priority/:level'
+      '/teams'
     ]
   });
 });
@@ -57,13 +52,6 @@ apiApp.use('/tasks', taskRoutes);
 apiApp.use('/search', searchRoutes);
 apiApp.use('/users', userRoutes);
 apiApp.use('/teams', teamRoutes);
-
-apiApp.get('/priority/:level', (req: Request, res: Response) => {
-  res.json({
-    status: 'success',
-    data: { level: req.params.level, tasks: [] }
-  });
-});
 
 // 404 Handler
 apiApp.use((req: Request, res: Response) => {
